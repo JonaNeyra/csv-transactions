@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  lambda-srv:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    ports:
+      - "9000:8080"
+    volumes:
+      - ./src:/var/task/src # Volumen por defecto para "public.ecr.aws/lambda/python:3.8"
+    environment:
+      DOCKER_LAMBDA_STAY_OPEN: 1
+    container_name: lambda-story-srv
