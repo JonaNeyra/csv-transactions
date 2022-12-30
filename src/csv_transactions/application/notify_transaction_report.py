@@ -38,23 +38,24 @@ class NotifyTransactionReport(HandlerUseCase):
         message["From"] = mail_from
         message["To"] = mail_to
 
-        operations_by_month = self.__monthly_sentences()
-
         image_part = self.__mail_logo()
+        html_part = self.__mail_body()
 
+        message.attach(html_part)
+        message.attach(image_part)
+
+        return message
+
+    def __mail_body(self):
+        operations_by_month = self.__monthly_sentences()
         html_body = balance_html.format(
             balance=self.account_info_service.get_balance(),
             monthly_transactions=operations_by_month,
             debit_average=self.account_info_service.get_debit_average(),
             credit_average=self.account_info_service.get_credit_average()
         )
-
         html_part = MIMEText(html_body, "html")
-
-        message.attach(html_part)
-        message.attach(image_part)
-
-        return message
+        return html_part
 
     def __mail_logo(self):
         binary_image = open(self.path_origin + self.stori_logo_name, 'rb')
@@ -68,7 +69,7 @@ class NotifyTransactionReport(HandlerUseCase):
         operations_by_month = ""
         for month, operations in monthly_collection.items():
             sentence = "&nbsp;&nbsp;&nbsp;&nbsp;Number of transactions in {month}: {operations}<br>".format(
-                month=Months(int(month)).name,
+                month=Months(int(month)).name.capitalize(),
                 operations=len(operations)
             )
 
