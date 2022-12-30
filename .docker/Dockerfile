@@ -7,6 +7,7 @@ RUN yum install -y sudo \
         git \
         libc-dev \
         libpq-dev \
+        libcairo-2 \
         postgresql-devel \
         python3-dev \
         gcc \

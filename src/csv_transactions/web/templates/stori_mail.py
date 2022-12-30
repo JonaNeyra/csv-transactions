@@ -9,6 +9,7 @@ balance_html = """\
 &nbsp;&nbsp;&nbsp;&nbsp;Average debit amount {debit_average}<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Average credit amount {credit_average}<br>
     </p>
+    <img src="cid:stori_cid_png"/>
   </body>
 </html>
 """
