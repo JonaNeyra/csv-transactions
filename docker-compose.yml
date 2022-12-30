@@ -11,4 +11,7 @@ services:
       - ./src:/var/task/src # Volumen por defecto para "public.ecr.aws/lambda/python:3.8"
     environment:
       DOCKER_LAMBDA_STAY_OPEN: 1
+      SENDER_MAIL: ${SENDER_MAIL}
+      RECEIVER_MAIL: ${RECEIVER_MAIL}
+      SENDER_PASS: ${SENDER_PASS}
     container_name: lambda-story-srv

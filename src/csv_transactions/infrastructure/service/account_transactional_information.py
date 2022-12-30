@@ -64,11 +64,12 @@ class AccountTransactionalInformation(TransactionalInformationService):
 
             month_val = transaction_date.month
             month_eval = month_val in self.monthly_transactions
+
             if not month_eval:
-                self.monthly_transactions[month_val] = TransactionalBody()
-                self.monthly_transactions[month_val].add_row(transaction_body)
+                self.monthly_transactions[month_val] = []
+                self.monthly_transactions[month_val].append(transaction_body)
             else:
-                self.monthly_transactions[month_val].add_row(transaction_body)
+                self.monthly_transactions[month_val].append(transaction_body)
 
             if transaction_value >= 0:
                 self.credit_transactions.append(transaction_value)

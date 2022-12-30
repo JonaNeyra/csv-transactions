@@ -2,18 +2,26 @@ from typing import Any
 
 from src.csv_transactions import (
     AccountTransactionalInformation,
-    AccountCsvFileRepository
+    AccountCsvFileRepository,
+    NotifyTransactionReport,
+    SmtpMessageContext
 )
 
 
 def handle(event: dict, context: Any):
-    account_transactional_info = AccountTransactionalInformation(
-        AccountCsvFileRepository()
-    )
-    account_transactional_info.process_file('3dbc158a-4856-45c8-a329-fb26f7f9ec19')
-    collection = account_transactional_info.get_balance()
-
-    print(collection)
     print("Event: ", event)
     print("Context: ", context)
-    return "Hello Docker RIE"
+
+    if "operation" in event and event["operation"] == "BALANCE_REPORT":
+        account_transactional_info = AccountTransactionalInformation(AccountCsvFileRepository())
+        smtp_mailer = SmtpMessageContext()
+        transaction_report = NotifyTransactionReport(
+            account_info_service=account_transactional_info,
+            mail_service=smtp_mailer
+        )
+
+        transaction_report.execute(event.get("user_uuid", ""))
+    else:
+        raise NotImplementedError("The operation is not implemented.")
+
+    return "The message has been sent."

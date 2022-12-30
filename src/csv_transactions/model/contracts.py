@@ -7,6 +7,16 @@ class HandlerUseCase(ABC):
         ...
 
 
+class SmtpMessageContextService(ABC):
+    @abstractmethod
+    def conn(self, sender: str, password: str):
+        ...
+
+    @abstractmethod
+    def send(self, receiver: str, message):
+        ...
+
+
 class CsvFileRepository(ABC):
     @abstractmethod
     def account_file(self, account_path: str):
